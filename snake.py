@@ -45,6 +45,9 @@ def main(stdscr):
         for segment in snake:
             win.addch(segment[0], segment[1], '#')
 
+        # 绘制边框
+        win.border(0)
+
         # 初始移动方向：向右
         key = curses.KEY_RIGHT
 
@@ -56,10 +59,6 @@ def main(stdscr):
 
         # 游戏循环
         while not game_over:
-            # 显示分数
-            win.addstr(0, 2, f'分数: {score} ')
-            win.addstr(0, sw // 2 - 10, '贪吃蛇 - WASD/方向键控制')
-
             # 获取下一个按键
             next_key = win.getch()
 
@@ -119,18 +118,27 @@ def main(stdscr):
                     ]
                     if food not in snake:
                         break
-
-                win.addch(food[0], food[1], 'O')
             else:
                 # 没吃到食物，移除蛇尾
-                tail = snake.pop()
-                win.addch(tail[0], tail[1], ' ')
+                snake.pop()
 
-            # 绘制蛇头
-            win.addch(snake[0][0], snake[0][1], '#')
+            # ========== 重绘整个游戏区域 ==========
+            # 1. 清除整个游戏区域
+            win.clear()
 
-            # 绘制边框
+            # 2. 绘制边框
             win.border(0)
+
+            # 3. 显示分数
+            win.addstr(0, 2, f'分数: {score} ')
+            win.addstr(0, sw // 2 - 10, '贪吃蛇 - WASD/方向键控制')
+
+            # 4. 绘制食物
+            win.addch(food[0], food[1], 'O')
+
+            # 5. 绘制整个蛇身
+            for segment in snake:
+                win.addch(segment[0], segment[1], '#')
 
             win.refresh()
 
