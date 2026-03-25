@@ -41,6 +41,10 @@ def main(stdscr):
         food = [sh // 2, sw // 2]
         win.addch(food[0], food[1], 'O')  # 用 'O' 表示食物
 
+        # 绘制初始蛇身
+        for segment in snake:
+            win.addch(segment[0], segment[1], '#')
+
         # 初始移动方向：向右
         key = curses.KEY_RIGHT
 
